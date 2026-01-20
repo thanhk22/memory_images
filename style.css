@@ -1,40 +1,63 @@
+*{
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   overflow: hidden;
   background: radial-gradient(circle at bottom, #1b0033, #000);
-  font-family: sans-serif;
 }
 
+/* full màn hình + perspective*/
 .space {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  perspective: 1200px;
 }
 
+/*vòng xoay*/
 .carousel {
   position: relative;
-  width: 300px;
-  height: 300px;
-  animation: spin 20s linear infinite;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
 }
 
 .carousel img {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  top: 50%;
+  left: 50%;
   border-radius: 12px;
+  object-fit: cover;
   cursor: pointer;
-  transition: transform 0.4s;
+
+  transform-style: preserve-3d;
+
+  animation: orbit 100s linear infinite;
+  animation-delay: var(--delay);
+  
+  will-change: transform;
 }
 
 .carousel img.active {
+  animation-play-state: paused;
   transform: scale(2);
   z-index: 10;
 }
 
-@keyframes spin {
-  from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
+@keyframes orbit{
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateY(var(--angle))
+      translateZ(var(--radius));  }
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateY(calc(var(--angle) + 360deg))
+      translateZ(var(--radius));
+    }
 }
