@@ -1,49 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//   const carousel = document.getElementById("carousel");
-
-//   fetch("./images.json")
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error("Không đọc được images.json");
-//       }
-//       return response.json();
-//     })
-//     .then(images => {
-//       if (!Array.isArray(images) || images.length === 0) {
-//         throw new Error("images.json rỗng hoặc sai format");
-//       }
-
-//       const total = images.length;
-//       const radius = 140;
-
-//       images.forEach((src, index) => {
-//         const img = document.createElement("img");
-//         img.src = src;
-//         img.alt = "memory";
-
-//         img.onload = () => {
-//           console.log("Load OK:", src);
-//         };
-
-//         img.onerror = () => {
-//           console.error("Ảnh lỗi:", src);
-//         };
-
-//         const angle = (360 / total) * index;
-//         img.style.transform = `
-//           rotateY(${angle}deg)
-//           translateZ(${radius}px)
-//         `;
-
-//         carousel.appendChild(img);
-//       });
-//     })
-//     .catch(error => {
-//       console.error("LỖI:", error.message);
-//     });
-// });
-// const carousel = document.getElementById("carousel");
-// const music = document.getElementById("bgm");
 document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.getElementById("carousel");
 
@@ -60,10 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
       let imgSize = minScreen / Math.sqrt(total);
 
       // giới hạn để ảnh không quá to / quá nhỏ
-      imgSize = Math.max(40, Math.min(imgSize, 130));
+      imgSize = Math.max(40, Math.min(imgSize, 60));
 
       // tính bán kính vòng tròn
       const radius = (total * imgSize) / (2 * Math.PI);
+
+      const overlay = document.getElementById("overlay");
+      let activeImg = null;
 
       images.forEach((src, index) => {
         const img = document.createElement("img");
@@ -76,7 +33,33 @@ document.addEventListener("DOMContentLoaded", () => {
         img.style.setProperty("--radius", `${radius}px`);
         img.style.setProperty("--delay", `-${index * 0.3}s`);
 
+        img.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          // nếu click lại chính ảnh đang active → đóng
+          if (img === activeImg) return;
+
+          // đóng ảnh cũ (nếu có)
+          if (activeImg) activeImg.classList.remove("active");
+
+          // mở ảnh mới
+          img.classList.add("active");
+          overlay.classList.add("show");
+          carousel.classList.add("paused");
+          activeImg = img;
+        });
         carousel.appendChild(img);
+      });
+      
+      overlay.addEventListener("click", () => {
+        if (activeImg) {
+          activeImg.classList.remove("active");
+          setTimeout(() => {
+            overlay.classList.remove("show");
+            carousel.classList.remove("paused");
+            activeImg = null;
+          }, 100);
+        }
       });
     });
 });

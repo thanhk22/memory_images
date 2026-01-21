@@ -35,18 +35,42 @@ body {
   cursor: pointer;
 
   transform-style: preserve-3d;
+  transition: transform 0.6s ease, opacity 0.5s ease, filter 0.5s ease;
 
   animation: orbit 100s linear infinite;
   animation-delay: var(--delay);
-  
+  backface-visibility: hidden;
   will-change: transform;
 }
 
 .carousel img.active {
-  animation-play-state: paused;
-  transform: scale(2);
-  z-index: 10;
+  animation: none !important;
+  z-index: 999;
+  /* animation-play-state: paused; */
+  transform:
+    translate(-50%, -50%)
+    /* rotateY(var(--angle)) */
+    rotateY(0deg)
+    /* translateZ(calc(var(--radius) * 1.2)) */
+    translateZ(700px)
+    scale(2) !important;
+  /* transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); Hiệu ứng đàn hồi */
+  /* transition: transform 0.6s ease; */
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
 }
+
+.carousel.paused img {
+  animation-play-state: paused;
+}
+
+.carousel.paused img:not(.active) {
+  opacity: 0.2;
+  filter: blur(2px);
+  pointer-events: none;
+  /* transition: all 0.5s ease; */
+}
+
 
 @keyframes orbit{
   from {
@@ -60,4 +84,21 @@ body {
       rotateY(calc(var(--angle) + 360deg))
       translateZ(var(--radius));
     }
+}
+
+/* nền mờ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 100;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto;
 }
