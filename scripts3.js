@@ -31,18 +31,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const unlockVideoAudio = async () => {
         if (!videoUnlocked) {
             memoryVideo.muted = false;
-            memoryVideo.volume = 5;
+            memoryVideo.volume = 1;
             videoUnlocked = true;
         }
     };
 
-    // window.addEventListener("load", () => {
-    //     memoryVideo.muted = true;   // bắt buộc
-    //     memoryVideo.play().catch(() => {});
-    // });
-
-    document.addEventListener("click", unlockVideoAudio, { once: true });
-    document.addEventListener("touchstart", unlockVideoAudio, { once: true });
+    // Unlock audio khi user interact, nhưng ko dừng video
+    const audioUnlocker = () => {
+        unlockVideoAudio();
+        if (!memoryVideo.paused) {
+            memoryVideo.play().catch(() => {});
+        }
+    };
+    document.addEventListener("click", audioUnlocker, { once: true });
+    document.addEventListener("touchstart", audioUnlocker, { once: true });
 
 
     // Toggle video / carousel
@@ -60,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             space.classList.add("hidden");
-            // videoLayer.style.display = "block";
             videoLayer.style.display = "flex";
             space.style.display="none";
 
@@ -113,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         bgm.play().then(() => {
             // Sau khi nhạc đã phát thành công, gỡ bỏ sự kiện để tránh gọi lại nhiều lần
-            // space.addEventListener("click", startMusic);
             space.removeEventListener("click", startMusic);
         }).catch (err => {
             console.log("Trình duyệt chặn tự động phát nhạc: ", err);
@@ -149,14 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 img.style.setProperty("--angle", `${angle}deg`);
                 img.style.setProperty("--radius", `${radius}px`);
                 img.style.setProperty("--delay", `-${index * (100 / total)}s`); // Chia tỷ lệ chính xác hơn
-
-                // img.onload = () => {
-                //     loadedCount++;
-                //     if (loadedCount === total){
-                //         //tất cả ảnh đã load
-                //         space.classList.add("ready");
-                //     }
-                // };
 
                 img.addEventListener("click", (e) => {
                     e.stopPropagation();

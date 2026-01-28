@@ -73,7 +73,6 @@ body {
   box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
   filter: none !important;
   opacity: 1 !important;
-  /* transition: none !important; */
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
   pointer-events: auto;
 
@@ -215,18 +214,17 @@ body {
   background: black;
 }
 
-/* Khi màn hình DỌC → xoay web */
+/* Responsive cho tất cả orientation */
 @media screen and (orientation: portrait) {
-  #rotateWrapper {
-    width: 100vh;
-    height: 100vw;
-    transform: rotate(90deg) translateY(-100%);
+  body, .space, #videoLayer, #rotateWrapper {
+    width: 100vw;
+    height: 100vh;
   }
 }
 
-/* Khi màn hình NGANG → bình thường */
 @media screen and (orientation: landscape) {
-  #rotateWrapper {
-    transform: none;
+  body, .space, #videoLayer, #rotateWrapper {
+    width: 100vw;
+    height: 100vh;
   }
 }
