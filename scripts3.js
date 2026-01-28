@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const memoryVideo = document.getElementById("memoryVideo");
     const space = document.querySelector(".space");
     const videoLayer = document.getElementById("videoLayer");
+    memoryVideo.style.pointerEvents = "none";
 
     let activeImg = null;
     let isVideo = true;
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // gỡ mute sau click đầu tiên
     const unlockVideoAudio = async () => {
+        if (videoUnlocked) return;
         if (!videoUnlocked) {
             memoryVideo.muted = false;
             memoryVideo.volume = 1;
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.addEventListener("click", unlockOnce, { once: true });
-    document.addEventListener("touchstart", unlockOnce, { once: true });
+    // document.addEventListener("touchstart", unlockOnce, { once: true });
 
 
     // Unlock audio khi user interact, nhưng ko dừng video
@@ -102,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             bgm.pause();
 
             if (memoryVideo.paused) {
-                // memoryVideo.currentTime = 0;
+                memoryVideo.currentTime = 0;
                 memoryVideo.play().catch(()=>{});
             }
 
