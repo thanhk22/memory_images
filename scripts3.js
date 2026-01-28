@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("click", unlockVideoAudio, { once: true });
-    document.addEventListener("touchstart", unlockVideoAudio, { once: true });
+    // document.addEventListener("touchstart", unlockVideoAudio, { once: true });
 
 
     // Toggle video / carousel
