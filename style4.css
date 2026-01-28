@@ -14,16 +14,14 @@ body {
 .space {
   width: 100vw;
   height: 100vh;
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   perspective: 1500px; /* Tăng perspective để chiều sâu rõ rệt hơn */
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
 }
 
 .space.hidden {
+  display: none;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;

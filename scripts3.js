@@ -36,13 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    window.addEventListener("load", () => {
-        video.muted = true;   // bắt buộc
-        video.play().catch(() => {});
-    });
+    // window.addEventListener("load", () => {
+    //     memoryVideo.muted = true;   // bắt buộc
+    //     memoryVideo.play().catch(() => {});
+    // });
 
     document.addEventListener("click", unlockVideoAudio, { once: true });
-    // document.addEventListener("touchstart", unlockVideoAudio, { once: true });
+    document.addEventListener("touchstart", unlockVideoAudio, { once: true });
 
 
     // Toggle video / carousel
@@ -66,11 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             bgm.pause();
 
-            memoryVideo.currentTime = 0;
-            await memoryVideo.play().catch(()=>{});
+            if (memoryVideo.paused) {
+                memoryVideo.currentTime = 0;
+                memoryVideo.play().catch(()=>{});
+            }
 
             btn.textContent = "🌌";
         } else {
+            space.style.display = "flex";
             memoryVideo.pause();
             videoLayer.style.display = "none";
             space.classList.remove("hidden");
