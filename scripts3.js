@@ -26,6 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     memoryVideo.muted = true;   // cần cho autoplay
     memoryVideo.play().catch(() => {});
+    
+    // Ngăn chặn video pause khi click/touch
+    memoryVideo.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+    memoryVideo.addEventListener("touchstart", (e) => {
+        e.stopPropagation();
+    });
 
     // gỡ mute sau click đầu tiên
     const unlockVideoAudio = async () => {
@@ -37,14 +45,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Unlock audio khi user interact, nhưng ko dừng video
-    const audioUnlocker = () => {
+    const audioUnlocker = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         unlockVideoAudio();
-        if (!memoryVideo.paused) {
+        if (memoryVideo.paused) {
             memoryVideo.play().catch(() => {});
         }
     };
-    document.addEventListener("click", audioUnlocker, { once: true });
-    document.addEventListener("touchstart", audioUnlocker, { once: true });
+    
+    videoLayer.addEventListener("click", audioUnlocker, { once: true });
+    videoLayer.addEventListener("touchstart", audioUnlocker, { once: true });
 
 
     // Toggle video / carousel
