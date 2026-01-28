@@ -27,13 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     memoryVideo.muted = true;   // cần cho autoplay
     memoryVideo.play().catch(() => {});
     
-    // Ngăn chặn video pause khi click/touch
-    memoryVideo.addEventListener("click", (e) => {
-        e.stopPropagation();
-    });
-    memoryVideo.addEventListener("touchstart", (e) => {
-        e.stopPropagation();
-    });
+    // // Ngăn chặn video pause khi click/touch
+    // memoryVideo.addEventListener("click", (e) => {
+    //     e.stopPropagation();
+    // });
+    // memoryVideo.addEventListener("touchstart", (e) => {
+    //     e.stopPropagation();
+    // });
 
     // gỡ mute sau click đầu tiên
     const unlockVideoAudio = async () => {
@@ -50,15 +50,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Unlock audio khi user interact, nhưng ko dừng video
-    const audioUnlocker = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        unlockVideoAudio();
+    const unlockOnce = async () => {
+        if (videoUnlocked) return;
+
+        videoUnlocked = true;
+
+        memoryVideo.pause();
+        memoryVideo.muted = false;
+        memoryVideo.volume = 1;
+
+        try {
+            await memoryVideo.play();
+        } catch (e) {
+            console.log("unlock failed", e);
+        }
     };
+
+    document.addEventListener("click", unlockOnce, { once: true });
+    document.addEventListener("touchstart", unlockOnce, { once: true });
+
+
+    // Unlock audio khi user interact, nhưng ko dừng video
+    // const audioUnlocker = (e) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     unlockVideoAudio();
+    // };
     
-    videoLayer.addEventListener("click", audioUnlocker, { once: true });
-    videoLayer.addEventListener("touchstart", audioUnlocker, { once: true });
+    // videoLayer.addEventListener("click", audioUnlocker, { once: true });
+    // videoLayer.addEventListener("touchstart", audioUnlocker, { once: true });
 
 
     // Toggle video / carousel
@@ -82,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             bgm.pause();
 
             if (memoryVideo.paused) {
-                memoryVideo.currentTime = 0;
+                // memoryVideo.currentTime = 0;
                 memoryVideo.play().catch(()=>{});
             }
 
