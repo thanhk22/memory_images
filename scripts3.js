@@ -11,12 +11,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const videoLayer = document.getElementById("videoLayer");
 
     let activeImg = null;
-    let isVideo = false;
+    let isVideo = true;
     let videoUnlocked = false;
 
     const videoModeBtn = document.getElementById("videoModeBtn");
     let videoMode = "loop";
     memoryVideo.loop = true;
+
+    // trạng thái ban đầu: video
+    videoLayer.style.display = "flex";
+    space.classList.add("hidden");
+
+    bgm.pause();
+
+    memoryVideo.muted = true;   // cần cho autoplay
+    memoryVideo.play().catch(() => {});
 
     // gỡ mute sau click đầu tiên
     const unlockVideoAudio = async () => {
@@ -26,6 +35,15 @@ document.addEventListener("DOMContentLoaded", () => {
             videoUnlocked = true;
         }
     };
+
+    window.addEventListener("load", () => {
+        video.muted = true;   // bắt buộc
+        video.play().catch(() => {});
+    });
+
+    document.addEventListener("click", unlockVideoAudio, { once: true });
+    document.addEventListener("touchstart", unlockVideoAudio, { once: true });
+
 
     // Toggle video / carousel
     btn.addEventListener("click", async () => {
@@ -42,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             space.classList.add("hidden");
-            videoLayer.style.display = "block";
+            // videoLayer.style.display = "block";
+            videoLayer.style.display = "flex";
+            space.style.display="none";
 
             bgm.pause();
 

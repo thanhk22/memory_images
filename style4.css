@@ -14,10 +14,13 @@ body {
 .space {
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   perspective: 1500px; /* Tăng perspective để chiều sâu rõ rệt hơn */
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .space.hidden {
@@ -141,7 +144,7 @@ body {
   background: black;
   z-index: 900;
 
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
