@@ -41,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
             memoryVideo.muted = false;
             memoryVideo.volume = 1;
             videoUnlocked = true;
+            
+            // Pause rồi play lại để tiếng phát lên
+            const currentTime = memoryVideo.currentTime;
+            memoryVideo.pause();
+            memoryVideo.currentTime = currentTime;
+            memoryVideo.play().catch(() => {});
         }
     };
 
@@ -49,9 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         e.stopPropagation();
         unlockVideoAudio();
-        if (memoryVideo.paused) {
-            memoryVideo.play().catch(() => {});
-        }
     };
     
     videoLayer.addEventListener("click", audioUnlocker, { once: true });
