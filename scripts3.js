@@ -27,14 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     memoryVideo.muted = true;   // cần cho autoplay
     memoryVideo.play().catch(() => {});
-    
-    // // Ngăn chặn video pause khi click/touch
-    // memoryVideo.addEventListener("click", (e) => {
-    //     e.stopPropagation();
-    // });
-    // memoryVideo.addEventListener("touchstart", (e) => {
-    //     e.stopPropagation();
-    // });
 
     // gỡ mute sau click đầu tiên
     const unlockVideoAudio = async () => {
@@ -69,19 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.addEventListener("click", unlockOnce, { once: true });
-    // document.addEventListener("touchstart", unlockOnce, { once: true });
-
-
-    // Unlock audio khi user interact, nhưng ko dừng video
-    // const audioUnlocker = (e) => {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     unlockVideoAudio();
-    // };
-    
-    // videoLayer.addEventListener("click", audioUnlocker, { once: true });
-    // videoLayer.addEventListener("touchstart", audioUnlocker, { once: true });
-
 
     // Toggle video / carousel
     btn.addEventListener("click", async () => {
@@ -173,8 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
             imgSize = Math.max(50, Math.min(imgSize, 70));
 
             const radius = (total * imgSize) / (2 * Math.PI) * 1.1;
-
-            // let loadedCount = 0;
 
             images.forEach((src, index) => {
                 const img = document.createElement("img");
