@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let videoMode = "loop";
     memoryVideo.loop = true;
 
+    const downloadBtn = document.getElementById("downloadBtn");
+
     // trạng thái ban đầu: video
     videoLayer.style.display = "flex";
     space.classList.add("hidden");
@@ -180,6 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     overlay.classList.add("show");
                     carousel.classList.add("paused");
                     activeImg = img;
+
+                    // hiện nút tải
+                    downloadBtn.classList.add("show");
                 });
 
                 carousel.appendChild(img);
@@ -194,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     activeImg.classList.remove("active");
                     overlay.classList.remove("show");
+                    downloadBtn.classList.remove("show");
 
                     setTimeout(() => {
                         carousel.classList.remove("paused");
@@ -206,4 +212,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (e.target.classList.contains("active")) closeActiveImage();
             });
         });
+    downloadBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (!activeImg) return;
+
+        const imageUrl = activeImg.src;
+
+        // Lấy tên file từ URL
+        const fileName = imageUrl.split("/").pop();
+
+        // const link = document.createElement("a");
+        // link.href = imageUrl;
+        // link.download = fileName;
+        // link.click();
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error("Tải ảnh thất bại:", err);
+            alert("Không thể tải ảnh 😢");
+        }
+        // document.body.appendChild(link);
+        // document.body.removeChild(link);
+    });
 });

@@ -228,3 +228,36 @@ body {
     height: 100vh;
   }
 }
+
+/* nút tải ảnh */
+#downloadBtn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10001;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 15px;
+
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+/* Chỉ hiện khi đang xem ảnh */
+#downloadBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#downloadBtn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
