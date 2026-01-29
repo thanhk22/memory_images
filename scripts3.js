@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let imgSize = minScreen / Math.sqrt(total);
             imgSize = Math.max(50, Math.min(imgSize, 70));
 
-            const radius = (total * imgSize) / (2 * Math.PI) * 1.1;
+            const radius = (total * imgSize) / (2 * Math.PI) * 0.8;
 
             images.forEach((src, index) => {
                 const img = document.createElement("img");
